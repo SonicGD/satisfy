@@ -40,7 +40,7 @@ class GitlabWebhook extends AbstractWebhook
 
         $repository = $this->findRepository($urls);
         if (!$repository) {
-            throw new \InvalidArgumentException('Cannot find specified repository');
+            throw new \InvalidArgumentException('Cannot find specified repository: ' . implode(', ', $urls));
         }
 
         $event = new BuildEvent($repository);
@@ -52,9 +52,8 @@ class GitlabWebhook extends AbstractWebhook
 
     protected function getUrlPattern(string $url): string
     {
-        $pattern = '#^' . $url . '$#';
-        $pattern = str_replace(['.', ':'], ['\.', '\:'], $pattern);
-
+        $url = str_replace(['.', ':', '/'], ['\.', '\:', '\/'], $url);
+        $pattern = '/^' . $url . '$/i';
         return $pattern;
     }
 
