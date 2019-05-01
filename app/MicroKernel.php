@@ -52,7 +52,7 @@ class MicroKernel extends Kernel
     protected function configureRoutes(RouteCollectionBuilder $routes)
     {
         $controllerBase = 'Playbloom\Satisfy\Controller\\';
-        $routes->add('/', 'kernel:indexAction', 'index');
+        $routes->add('/', $controllerBase . 'IndexController::indexAction', 'index');
         // security
         $routes->add('/login', 'Playbloom\Satisfy\Controller\SecurityController::loginAction', 'login');
         // repository
@@ -101,18 +101,5 @@ class MicroKernel extends Kernel
     public function getLogDir()
     {
         return __DIR__ . '/../var/logs';
-    }
-
-    /**
-     * @return Response
-     */
-    public function indexAction()
-    {
-        $indexFile = __DIR__ . '/../web/index.html';
-        if (!file_exists($indexFile)) {
-            return $this->getContainer()->get('templating')->renderResponse('unavailable.html.twig');
-        }
-
-        return new BinaryFileResponse($indexFile, 200, [], false);
     }
 }
