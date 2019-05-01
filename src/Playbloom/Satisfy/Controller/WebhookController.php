@@ -44,7 +44,7 @@ class WebhookController extends Controller
         try {
             $status = $webhook->handle($request);
         } catch (\InvalidArgumentException $exception) {
-            throw new BadRequestHttpException();
+            throw new BadRequestHttpException($exception->getMessage());
         } catch (\Throwable $exception) {
             throw new ServiceUnavailableHttpException();
         }
